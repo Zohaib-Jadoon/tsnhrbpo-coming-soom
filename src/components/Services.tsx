@@ -256,9 +256,11 @@ const StoryChapter = ({ service, index }: { service: typeof SERVICES_DATA[0], in
 export default function Services() {
     const containerRef = useRef<HTMLDivElement>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    const rafRef = useRef<number | null>(null)
+    const lastFrameRef = useRef<number>(-1)
 
-    // We keep the image objects in state to retain them after loading
-    const [images, setImages] = useState<HTMLImageElement[]>([])
+    // Store all 100 image objects in a ref (no re-render on update)
+    const imagesRef = useRef<HTMLImageElement[]>(new Array(100))
     const [isLoaded, setIsLoaded] = useState(false)
     const [loadingProgress, setLoadingProgress] = useState(0)
 
@@ -268,63 +270,74 @@ export default function Services() {
         offset: ["start start", "end end"]
     })
 
-    // 1. Preload Images seamlessly into browser memory
+    // 1. Progressive Preloading: show canvas after first 15 frames, rest load silently
     useEffect(() => {
-        let loadedCount = 0
-        const totalFrames = 100
-        const loadedImages: HTMLImageElement[] = new Array(totalFrames)
+        const TOTAL_FRAMES = 100
+        const INITIAL_BATCH = 15 // frames needed before we show the canvas
+        let initialLoaded = 0
+        let totalLoaded = 0
 
-        const trySetLoaded = () => {
-            loadedCount++
-            setLoadingProgress(Math.floor((loadedCount / totalFrames) * 100))
-            if (loadedCount === totalFrames) {
-                setImages(loadedImages)
-                setIsLoaded(true)
+        const onEachLoad = (index: number) => {
+            totalLoaded++
+            const progress = Math.floor((totalLoaded / TOTAL_FRAMES) * 100)
+            setLoadingProgress(progress)
+
+            // Unlock canvas after the first INITIAL_BATCH frames are ready
+            if (index < INITIAL_BATCH) {
+                initialLoaded++
+                if (initialLoaded === INITIAL_BATCH) {
+                    setIsLoaded(true)
+                }
             }
         }
 
-        for (let i = 1; i <= totalFrames; i++) {
+        for (let i = 0; i < TOTAL_FRAMES; i++) {
             const img = new Image()
-            const frameNum = i.toString().padStart(3, '0') // 1 -> 001
-            // Use the correct path for public images
+            const frameNum = (i + 1).toString().padStart(3, '0')
             img.src = `/frames/${frameNum}.png`
-            img.onload = trySetLoaded
-            img.onerror = trySetLoaded
-            loadedImages[i - 1] = img
+            img.onload = () => onEachLoad(i)
+            img.onerror = () => onEachLoad(i)
+            imagesRef.current[i] = img
+        }
+
+        return () => {
+            // Cancel any pending RAF on unmount
+            if (rafRef.current) cancelAnimationFrame(rafRef.current)
         }
     }, [])
 
-    // 2. High-performance Canvas Renderer
-    const drawFrame = (frameIndex: number) => {
-        if (!canvasRef.current || images.length !== 100) return
-        const context = canvasRef.current.getContext("2d")
-        const image = images[frameIndex]
+    // 2. High-performance Canvas Renderer with RAF throttle
+    const drawFrame = React.useCallback((frameIndex: number) => {
+        const canvas = canvasRef.current
+        const image = imagesRef.current[frameIndex]
+        if (!canvas || !image?.complete || !image.naturalWidth) return
 
-        if (context && image && image.complete && image.naturalWidth > 0) {
-            const cw = canvasRef.current.width
-            const ch = canvasRef.current.height
-            context.clearRect(0, 0, cw, ch)
+        // Skip if same frame to avoid redundant draws
+        if (lastFrameRef.current === frameIndex) return
+        lastFrameRef.current = frameIndex
 
-            const canvasRatio = cw / ch
-            const imageRatio = image.width / image.height
+        const context = canvas.getContext("2d")
+        if (!context) return
 
-            let drawWidth = cw
-            let drawHeight = ch
-            let drawX = 0
-            let drawY = 0
+        const cw = canvas.width
+        const ch = canvas.height
+        context.clearRect(0, 0, cw, ch)
 
-            // Match 'object-cover' CSS behavior
-            if (canvasRatio > imageRatio) {
-                drawHeight = cw / imageRatio
-                drawY = (ch - drawHeight) / 2
-            } else {
-                drawWidth = ch * imageRatio
-                drawX = (cw - drawWidth) / 2
-            }
+        const canvasRatio = cw / ch
+        const imageRatio = image.naturalWidth / image.naturalHeight
 
-            context.drawImage(image, drawX, drawY, drawWidth, drawHeight)
+        let drawWidth = cw, drawHeight = ch, drawX = 0, drawY = 0
+
+        if (canvasRatio > imageRatio) {
+            drawHeight = cw / imageRatio
+            drawY = (ch - drawHeight) / 2
+        } else {
+            drawWidth = ch * imageRatio
+            drawX = (cw - drawWidth) / 2
         }
-    }
+
+        context.drawImage(image, drawX, drawY, drawWidth, drawHeight)
+    }, [])
 
     // 3. Keep Canvas scaled correctly to Viewport + Initial Draw
     useEffect(() => {
@@ -333,30 +346,30 @@ export default function Services() {
                 const dpr = window.devicePixelRatio || 1
                 canvasRef.current.width = window.innerWidth * dpr
                 canvasRef.current.height = window.innerHeight * dpr
-
                 const maxFrame = 99
                 let currentFrame = Math.floor(scrollYProgress.get() * maxFrame)
                 if (isNaN(currentFrame)) currentFrame = 0
                 currentFrame = Math.min(maxFrame, Math.max(0, currentFrame))
+                lastFrameRef.current = -1 // force redraw after resize
                 drawFrame(currentFrame)
             }
         }
 
-        if (isLoaded) {
-            handleResize()
-        }
+        if (isLoaded) handleResize()
 
         window.addEventListener("resize", handleResize)
         return () => window.removeEventListener("resize", handleResize)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoaded, images])
+    }, [isLoaded, drawFrame])
 
-    // 4. Scrubbing engine driven by scroll position
+    // 4. RAF-throttled scrubbing engine driven by scroll position
     useMotionValueEvent(scrollYProgress, "change", (latestFraction) => {
         if (!isLoaded) return
         const maxFrameIndex = 99
-        let frameIndex = Math.min(maxFrameIndex, Math.max(0, Math.floor(latestFraction * maxFrameIndex)))
-        requestAnimationFrame(() => drawFrame(frameIndex))
+        const frameIndex = Math.min(maxFrameIndex, Math.max(0, Math.floor(latestFraction * maxFrameIndex)))
+        // Cancel pending RAF before scheduling a new one (throttle)
+        if (rafRef.current) cancelAnimationFrame(rafRef.current)
+        rafRef.current = requestAnimationFrame(() => drawFrame(frameIndex))
     })
 
     return (

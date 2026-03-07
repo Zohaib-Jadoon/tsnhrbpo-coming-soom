@@ -19,10 +19,10 @@ export default function Hero() {
                     loop
                     muted
                     playsInline
+                    preload="auto"
                     className="w-full h-full object-cover"
                 >
                     <source src="/assets/hero_bg.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
                 </video>
 
                 {/* Dark Overlays for Text Readability */}
@@ -37,6 +37,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="space-y-6"
+                    style={{ willChange: "opacity, transform" }}
                 >
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-cyan-400 text-sm font-medium tracking-wide">
                         <span className="relative flex h-2 w-2">
@@ -75,6 +76,7 @@ export default function Hero() {
                                     ease: "easeInOut"
                                 }}
                                 className="text-2xl md:text-3xl font-light text-white uppercase tracking-[0.5em] drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                                style={{ willChange: "opacity" }}
                             >
                                 Coming Soon
                             </motion.span>
@@ -102,6 +104,8 @@ export default function Hero() {
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 hover:text-white transition-colors"
+                style={{ willChange: "transform" }}
+                aria-label="Scroll to services"
             >
                 <div className="w-8 h-12 rounded-full border-2 border-current flex justify-center p-2">
                     <div className="w-1.5 h-3 bg-current rounded-full" />
