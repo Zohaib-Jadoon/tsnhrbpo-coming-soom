@@ -2,7 +2,7 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import { Sparkles, Target, Eye, Shield, Award, Users, ArrowRight, Globe, Cpu } from "lucide-react"
+import { Sparkles, Target, Eye, Shield, Award, Users, Globe, Cpu } from "lucide-react"
 import Navbar from "@/components/Navbar"
 import Link from "next/link"
 
@@ -21,7 +21,7 @@ const SectionHeader = ({ title, subtitle, badge }: { title: string, subtitle: st
         <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight"
+            className="text-3xl md:text-6xl font-black text-white tracking-tight leading-tight"
         >
             {title}
         </motion.h2>
@@ -29,7 +29,7 @@ const SectionHeader = ({ title, subtitle, badge }: { title: string, subtitle: st
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-slate-400 font-medium leading-relaxed max-w-3xl"
+            className="text-lg md:text-xl text-slate-400 font-medium leading-relaxed max-w-3xl"
         >
             {subtitle}
         </motion.p>
@@ -84,16 +84,16 @@ export default function AboutPage() {
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9]"
+                        className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.9]"
                     >
-                        Human Capital, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-white to-cyan-400 italic">Redefined.</span>
+                        Human Capital, <br className="sm:hidden" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-white to-cyan-400 italic">Redefined.</span>
                     </motion.h1>
                     
                     <motion.p
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="max-w-3xl text-xl md:text-2xl text-slate-400 font-medium leading-relaxed"
+                        className="max-w-3xl text-lg md:text-2xl text-slate-400 font-medium leading-relaxed"
                     >
                         TSNHRBPO is a technology-first HR Outsourcing organization dedicated to transforming complex human capital challenges into scalable enterprise advantages.
                     </motion.p>
@@ -164,7 +164,7 @@ export default function AboutPage() {
                         badge="Innovation Leaders"
                     />
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
                         {/* Featured: Dr. Fawad Asif */}
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -251,7 +251,7 @@ export default function AboutPage() {
 
                     <div className="relative py-12">
                         {/* Logo Grid - Midnight Tech Style */}
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                        <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 md:gap-6">
                             {[
                                 { name: "Askari Bank", label: "Financial Institutions" },
                                 { name: "Systems Ltd", label: "Technology" },
@@ -266,15 +266,15 @@ export default function AboutPage() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.1 }}
                                     viewport={{ once: true }}
-                                    className="group relative flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm hover:bg-slate-900/60 hover:border-cyan-500/20 transition-all duration-500"
+                                    className="group relative flex flex-col items-center justify-center p-4 md:p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm hover:bg-slate-900/60 hover:border-cyan-500/20 transition-all duration-500"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
-                                    <div className="relative z-10 text-center space-y-3">
-                                        <div className="text-xl font-black text-white/80 group-hover:text-white transition-colors tracking-tighter">
+                                    <div className="relative z-10 text-center space-y-2 md:space-y-3">
+                                        <div className="text-base md:text-xl font-black text-white/80 group-hover:text-white transition-colors tracking-tighter">
                                             {partner.name}
                                         </div>
-                                        <div className="h-px w-8 bg-indigo-500/30 group-hover:w-12 group-hover:bg-cyan-500/50 transition-all mx-auto" />
-                                        <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none">
+                                        <div className="h-px w-6 md:w-8 bg-indigo-500/30 group-hover:w-12 group-hover:bg-cyan-500/50 transition-all mx-auto" />
+                                        <div className="text-[8px] md:text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none">
                                             {partner.label}
                                         </div>
                                     </div>

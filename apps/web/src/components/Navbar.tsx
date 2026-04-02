@@ -186,9 +186,9 @@ export default function Navbar() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="lg:hidden bg-[#020617] border-b border-white/5 overflow-hidden"
+                        className="lg:hidden bg-[#020617] border-b border-white/5 overflow-y-auto max-h-[calc(100vh-80px)]"
                     >
-                        <div className="p-6 space-y-6">
+                        <div className="p-6 pb-20 space-y-6">
                             <div className="space-y-4">
                                 <Link
                                     href="/about"
