@@ -4,7 +4,27 @@ import React from "react"
 import { motion } from "framer-motion"
 import { Sparkles, Target, Eye, Shield, Award, Users, Globe, Cpu } from "lucide-react"
 import Navbar from "@/components/Navbar"
+import Marquee from "@/components/Marquee"
 import Link from "next/link"
+
+const PARTNERS = [
+    { name: "Askari Bank", label: "Financial Institutions" },
+    { name: "Systems Ltd", label: "Technology" },
+    { name: "PTCL", label: "Telecommunications" },
+    { name: "Lucky Core", label: "Manufacturing" },
+    { name: "Engro Corp", label: "Conglomerate" },
+    { name: "Zong (CMPak)", label: "Technology" },
+    { name: "Jazz", label: "Telecommunications" },
+    { name: "HBL", label: "Banking & Finance" },
+    { name: "KFC Pakistan", label: "FMCG / Food" },
+    { name: "Interloop", label: "Textile" },
+    { name: "Ferozsons", label: "Healthcare" },
+    { name: "SNGPL", label: "Energy" },
+    { name: "Bank Alfalah", label: "Banking" },
+    { name: "NetSol", label: "IT Services" },
+    { name: "Lucky Cement", label: "Construction" },
+    { name: "LCI Pakistan", label: "Chemicals" }
+]
 
 const SectionHeader = ({ title, subtitle, badge }: { title: string, subtitle: string, badge?: string }) => (
     <div className="space-y-4 mb-16 px-4">
@@ -249,38 +269,14 @@ export default function AboutPage() {
                         badge="Strategic Partnerships"
                     />
 
-                    <div className="relative py-12">
-                        {/* Logo Grid - Midnight Tech Style */}
-                        <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 md:gap-6">
-                            {[
-                                { name: "Askari Bank", label: "Financial Institutions" },
-                                { name: "Systems Ltd", label: "Technology" },
-                                { name: "PTCL", label: "Telecom" },
-                                { name: "Lucky Core", label: "Manufacturing" },
-                                { name: "Engro Corp", label: "Conglomerate" },
-                                { name: "Zong (CMPak)", label: "Technology" }
-                            ].map((partner, idx) => (
-                                <motion.div
-                                    key={partner.name}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: idx * 0.1 }}
-                                    viewport={{ once: true }}
-                                    className="group relative flex flex-col items-center justify-center p-4 md:p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm hover:bg-slate-900/60 hover:border-cyan-500/20 transition-all duration-500"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
-                                    <div className="relative z-10 text-center space-y-2 md:space-y-3">
-                                        <div className="text-base md:text-xl font-black text-white/80 group-hover:text-white transition-colors tracking-tighter">
-                                            {partner.name}
-                                        </div>
-                                        <div className="h-px w-6 md:w-8 bg-indigo-500/30 group-hover:w-12 group-hover:bg-cyan-500/50 transition-all mx-auto" />
-                                        <div className="text-[8px] md:text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none">
-                                            {partner.label}
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
+                    <div className="relative py-4">
+                        {/* Industry Trust - Infinite Marquee */}
+                        <div className="text-center mb-8">
+                            <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-slate-500 mb-2">Industry Trust</h2>
+                            <div className="h-1 w-12 bg-indigo-500/50 mx-auto rounded-full" />
                         </div>
+                        
+                        <Marquee items={PARTNERS} speed={60} />
                         
                         {/* Interactive Sparkle Overlay */}
                         <div className="absolute inset-0 pointer-events-none">
