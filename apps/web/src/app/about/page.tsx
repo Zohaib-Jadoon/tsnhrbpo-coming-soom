@@ -8,20 +8,20 @@ import Marquee from "@/components/Marquee"
 import Link from "next/link"
 
 const PARTNERS = [
-    { name: "Askari Bank", label: "Financial Institutions" },
-    { name: "Systems Ltd", label: "Technology" },
+    { name: "Askari Bank", label: "Financial Institutions", image: "/partners/askari.png" },
+    { name: "Systems Ltd", label: "Technology", image: "/partners/systems.svg" },
     { name: "PTCL", label: "Telecommunications" },
     { name: "Lucky Core", label: "Manufacturing" },
-    { name: "Engro Corp", label: "Conglomerate" },
+    { name: "Engro Corp", label: "Conglomerate", image: "/partners/engro.svg" },
     { name: "Zong (CMPak)", label: "Technology" },
     { name: "Jazz", label: "Telecommunications" },
     { name: "HBL", label: "Banking & Finance" },
-    { name: "KFC Pakistan", label: "FMCG / Food" },
-    { name: "Interloop", label: "Textile" },
+    { name: "KFC Pakistan", label: "FMCG / Food", image: "/partners/kfc.svg" },
+    { name: "Interloop", label: "Textile", image: "/partners/interloop.png" },
     { name: "Ferozsons", label: "Healthcare" },
-    { name: "SNGPL", label: "Energy" },
-    { name: "Bank Alfalah", label: "Banking" },
-    { name: "NetSol", label: "IT Services" },
+    { name: "SNGPL", label: "Energy", image: "/partners/sngpl.svg" },
+    { name: "Bank Alfalah", label: "Banking", image: "/partners/bankalfalah.svg" },
+    { name: "NetSol", label: "IT Services", image: "/partners/netsol.svg" },
     { name: "Lucky Cement", label: "Construction" },
     { name: "LCI Pakistan", label: "Chemicals" }
 ]

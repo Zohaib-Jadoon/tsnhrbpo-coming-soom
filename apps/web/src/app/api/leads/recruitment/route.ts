@@ -7,7 +7,7 @@ import { NextResponse } from "next/server"
 export async function POST(request: Request) {
     try {
         const body = await request.json()
-        const { name, email, phone, company, message, serviceId } = body
+        const { name, email, company, message, serviceId } = body
 
         // Basic server-side validation
         if (!name || !email || !company || !message) {

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { Globe, Shield, Sparkles, Github, Twitter, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Globe, Shield, Github, Twitter, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@erp/ui";
 
 const FOOTER_LINKS = [
