@@ -65,12 +65,19 @@ export default function Navbar() {
                 </Link>
 
                 {/* Desktop Menu */}
-                <div className="hidden lg:flex items-center gap-10">
+                <div className="hidden lg:flex items-center gap-10 text-sm font-semibold tracking-wide transition-all duration-300">
+                    <Link
+                        href="/about"
+                        className="text-slate-300 hover:text-white py-2"
+                    >
+                        Our Story
+                    </Link>
+
                     <div className="relative">
                         <button
                             onMouseEnter={handleMouseEnter}
                             className={cn(
-                                "flex items-center gap-1.5 text-sm font-semibold tracking-wide transition-all duration-300 py-2",
+                                "flex items-center gap-1.5 transition-all duration-300 py-2",
                                 servicesOpen ? "text-cyan-400" : "text-slate-300 hover:text-white"
                             )}
                         >
@@ -183,7 +190,16 @@ export default function Navbar() {
                     >
                         <div className="p-6 space-y-6">
                             <div className="space-y-4">
-                                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-2">Capabilities</p>
+                                <Link
+                                    href="/about"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="block w-full p-4 rounded-xl bg-white/5 border border-white/10 text-sm font-bold text-white flex items-center justify-between"
+                                >
+                                    Our Story
+                                    <ArrowRight className="w-4 h-4 text-slate-500" />
+                                </Link>
+
+                                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-2 pt-2">Capabilities</p>
                                 <div className="grid grid-cols-1 gap-2">
                                     {HR_CHAPTERS.map((chapter) => (
                                         <div key={chapter.id} className="rounded-xl border border-white/5 overflow-hidden">
