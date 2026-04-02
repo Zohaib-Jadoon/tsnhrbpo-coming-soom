@@ -70,7 +70,7 @@ export default function Navbar() {
                         href="/about"
                         className="text-slate-300 hover:text-white py-2"
                     >
-                        Our Story
+                        About Us
                     </Link>
 
                     <div className="relative">
@@ -195,7 +195,7 @@ export default function Navbar() {
                                     onClick={() => setMobileMenuOpen(false)}
                                     className="block w-full p-4 rounded-xl bg-white/5 border border-white/10 text-sm font-bold text-white flex items-center justify-between"
                                 >
-                                    Our Story
+                                    About Us
                                     <ArrowRight className="w-4 h-4 text-slate-500" />
                                 </Link>
 
